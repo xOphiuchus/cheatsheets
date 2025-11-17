@@ -1,5 +1,7 @@
 # C++ Data Structures & Algorithms (DSA) Cheatsheet
 
+Last Updated : 10 Oct, 2025
+
 ---
 
 ## 1. What are Data Structures and Algorithms? 📈
@@ -25,7 +27,109 @@ A phonebook is a data structure (like a hash table) that stores names and number
 
 ---
 
-## 2. Stacks 📚
+## 1. Array
+
+In C++, there are mainly two types of arrays.
+
+Array: Fixed-size and ideal when the number of elements is known.  
+Vector: Dynamic in nature and can grow or shrink as needed. It is part of the C++ Standard Template Library (STL), suitable when the number of elements varies.
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    // Array example
+    int arr[] = {10, 20, 30, 40, 50};
+
+    int n = sizeof(arr) / sizeof(arr[0]);
+    cout << "Array elements: ";
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+
+    // Vector Example
+    vector<int> list;
+
+    list.push_back(10);
+    list.push_back(20);
+    list.push_back(30);
+    cout << "Vector elements: ";
+    for (int i = 0; i < (int)list.size(); i++)
+        cout << list[i] << " ";
+
+    return 0;
+}
+```
+
+---
+
+## 2. Searching Algorithms (added examples)
+
+C++ provides both linear search and binary search (from <algorithm>).
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    vector<int> vec = {2, 4, 6, 6, 8, 10};
+    int key = 6;
+
+    // Linear search (works on unsorted too)
+    bool found = (find(vec.begin(), vec.end(), key) != vec.end());
+    cout << "Found (linear): " << found << "\n";
+
+    // Binary search (requires sorted)
+    bool binaryFound = binary_search(vec.begin(), vec.end(), key);
+    cout << "Found (binary): " << binaryFound << "\n";
+
+    // lower_bound and upper_bound
+    int firstIndex = lower_bound(vec.begin(), vec.end(), key) - vec.begin();
+    int afterIndex = upper_bound(vec.begin(), vec.end(), key) - vec.begin();
+    cout << "First ≥ key at index: " << firstIndex << "\n";
+    cout << "First > key at index: " << afterIndex << "\n";
+    return 0;
+}
+```
+
+---
+
+## 3. Sorting Algorithms (added examples)
+
+C++ provides a built-in sort (std::sort); here's a compact example.
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    int nums[] = {5, 3, 8, 1};
+    int n = sizeof(nums) / sizeof(nums[0]);
+    sort(nums, nums + n);
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) cout << nums[i] << " ";
+    cout << endl;
+
+    vector<int> list = {5, 3, 8, 1};
+    sort(list.begin(), list.end());
+    cout << "Sorted vector: ";
+    for (int num : list) cout << num << " ";
+    cout << endl;
+    return 0;
+}
+```
+
+---
+
+## 4. Stacks 📚
 
 **What it is:**  
 A stack is a linear data structure that follows the LIFO (Last-In, First-Out) principle.
@@ -62,7 +166,7 @@ Web browser history: "Back" pops the current page and returns to the previous.
 
 ---
 
-## 3. Queues 🎟️
+## 5. Queues 🎟️
 
 **What it is:**  
 A queue is a linear data structure that follows the FIFO (First-In, First-Out) principle.
@@ -96,7 +200,7 @@ Print spooler: Documents are processed in the order submitted.
 
 ---
 
-## 4. Priority Queues 🥇
+## 6. Priority Queues 🥇
 
 **What it is:**  
 A priority queue is a data structure where each element has a priority. Highest priority element is always at the front.
@@ -130,7 +234,7 @@ OS task scheduling: High-priority processes run before low-priority ones.
 
 ---
 
-## 5. Linked Lists 🔗
+## 7. Linked Lists 🔗
 
 **What it is:**  
 A linked list is a linear data structure where each node contains data and a pointer to the next node.
@@ -174,7 +278,7 @@ Music playlists: Easily add or remove songs.
 
 ---
 
-## 6. Dynamic Arrays 🌱
+## 8. Dynamic Arrays 🌱
 
 **What it is:**  
 A dynamic array can automatically resize itself (e.g., C++ std::vector).
@@ -210,7 +314,7 @@ Storing user-uploaded photos.
 
 ---
 
-## 7. LinkedLists vs ArrayLists 🤼‍♂️
+## 9. LinkedLists vs ArrayLists 🤼‍♂️
 
 **What it is:**  
 Comparison of linked list and dynamic array (ArrayList/vector).
@@ -232,7 +336,7 @@ Comparison of linked list and dynamic array (ArrayList/vector).
 
 ---
 
-## 8. Big O Notation 📈
+## 10. Big O Notation 📈
 
 **What it is:**  
 Describes the limiting behavior of an algorithm's running time or space as input size grows.
@@ -257,7 +361,7 @@ Comparing linear search ($O(n)$) vs binary search ($O(\log n)$).
 
 ---
 
-## 9. Linear Search ⬇️
+## 11. Linear Search ⬇️
 
 **What it is:**  
 Checks each element until a match is found.
@@ -286,7 +390,7 @@ Finding a file in an unsorted list.
 
 ---
 
-## 10. Binary Search 🪓
+## 12. Binary Search 🪓
 
 **What it is:**  
 Efficient search for sorted lists by repeatedly dividing the interval in half.
@@ -318,7 +422,7 @@ Finding a word in a dictionary.
 
 ---
 
-## 11. Interpolation Search ❓
+## 13. Interpolation Search ❓
 
 **What it is:**  
 Improvement over binary search for uniformly distributed data.
@@ -351,7 +455,7 @@ Searching for a name in a phone book.
 
 ---
 
-## 12. Bubble Sort 🤿
+## 14. Bubble Sort 🤿
 
 **What it is:**  
 Simple sorting algorithm that repeatedly steps through the list, swapping adjacent elements if out of order.
@@ -381,7 +485,7 @@ Teaching sorting basics.
 
 ---
 
-## 13. Selection Sort 🔦
+## 15. Selection Sort 🔦
 
 **What it is:**  
 Finds the minimum element and moves it to the sorted part.
@@ -413,7 +517,7 @@ Educational purposes.
 
 ---
 
-## 14. Insertion Sort 🧩
+## 16. Insertion Sort 🧩
 
 **What it is:**  
 Builds the sorted array one item at a time.
@@ -446,7 +550,7 @@ Sorting cards in your hand.
 
 ---
 
-## 15. Recursion 😵
+## 17. Recursion 😵
 
 **What it is:**  
 A function calls itself to solve a problem by breaking it into subproblems.
@@ -473,7 +577,7 @@ Calculating factorial.
 
 ---
 
-## 16. Merge Sort 🔪
+## 18. Merge Sort 🔪
 
 **What it is:**  
 Divide-and-conquer sorting algorithm: split, sort, and merge.
@@ -497,7 +601,7 @@ Sorting large datasets.
 
 ---
 
-## 17. Quick Sort ⚡
+## 19. Quick Sort ⚡
 
 **What it is:**  
 Divide-and-conquer sorting: pick a pivot, partition, and recurse.
@@ -521,7 +625,7 @@ In-memory array sorting.
 
 ---
 
-## 18. Hash Tables #️⃣
+## 20. Hash Tables #️⃣
 
 **What it is:**  
 Stores key-value pairs using a hash function (C++ `std::unordered_map`).
@@ -558,7 +662,7 @@ Dictionary or phonebook.
 
 ---
 
-## 19. Graphs Intro 🌐
+## 21. Graphs Intro 🌐
 
 **What it is:**  
 A graph is a set of vertices (nodes) and edges (connections).
@@ -581,7 +685,7 @@ Google Maps: cities and roads.
 
 ---
 
-## 20. Adjacency Matrix ⬜
+## 22. Adjacency Matrix ⬜
 
 **What it is:**  
 Graph representation using a 2D array.
@@ -615,7 +719,7 @@ Dense social network.
 
 ---
 
-## 21. Adjacency List 📑
+## 23. Adjacency List 📑
 
 **What it is:**  
 Graph representation using an array of lists/vectors.
@@ -654,7 +758,7 @@ Web links (sparse graph).
 
 ---
 
-## 22. Depth First Search (DFS) ⬇️
+## 24. Depth First Search (DFS) ⬇️
 
 **What it is:**  
 Graph traversal: explores as far as possible along each branch before backtracking.
@@ -682,7 +786,7 @@ Maze solving.
 
 ---
 
-## 23. Breadth First Search (BFS) ↔️
+## 25. Breadth First Search (BFS) ↔️
 
 **What it is:**  
 Graph traversal: explores all neighbors at current depth before going deeper.
@@ -720,7 +824,7 @@ Social network connections.
 
 ---
 
-## 24. Tree Data Structure Intro 🌳
+## 26. Tree Data Structure Intro 🌳
 
 **What it is:**  
 A hierarchical, non-linear data structure with nodes and edges.
@@ -738,7 +842,7 @@ File system directory tree.
 
 ---
 
-## 25. Binary Search Tree (BST) 🔍
+## 27. Binary Search Tree (BST) 🔍
 
 **What it is:**  
 A binary tree where left < root < right.
@@ -766,7 +870,7 @@ Sorted key-value map.
 
 ---
 
-## 26. Tree Traversal 🧗
+## 28. Tree Traversal 🧗
 
 **What it is:**  
 Visiting each node in a tree (inorder, preorder, postorder).
@@ -799,7 +903,7 @@ Printing BST in order.
 
 ---
 
-## 27. Calculate Execution Time ⏱️
+## 29. Calculate Execution Time ⏱️
 
 **What it is:**  
 Measuring how long code takes to run (C++ chrono).

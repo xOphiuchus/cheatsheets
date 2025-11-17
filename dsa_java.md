@@ -1,4 +1,5 @@
 # Java Data Structures & Algorithms (DSA) Cheatsheet
+Last Updated : 10 Oct, 2025
 
 ---
 
@@ -422,3 +423,77 @@ System.out.println((end-start)/1e6 + " ms");
 Use for benchmarking.
 
 ---
+
+## 28. Array
+
+Java arrays (fixed) and ArrayList (dynamic).
+
+```java
+// filepath: /data/Codes/Others/cheatsheets/dsa_java.md
+int[] arr = {10, 20, 30};
+System.out.println("Array: " + Arrays.toString(arr));
+
+ArrayList<Integer> list = new ArrayList<>();
+list.add(10); list.add(20); list.add(30);
+System.out.println("ArrayList: " + list);
+```
+
+## 29. Searching
+
+Linear (loop) and binary search via Arrays.binarySearch on sorted arrays.
+
+```java
+int[] a = {1,2,3,4,5};
+int idx = Arrays.binarySearch(a, 3); // O(log n)
+```
+
+## 30. Sorting
+
+Use Arrays.sort() and Collections.sort().
+
+```java
+int[] nums = {5,3,8,1};
+Arrays.sort(nums);
+```
+
+## 31. String
+
+String and StringBuilder / StringBuffer.
+
+```java
+String s = "Hello";
+StringBuilder sb = new StringBuilder();
+sb.append("Hello").append(" Java");
+```
+
+## 32. Set, Map
+
+HashSet, TreeSet, HashMap, TreeMap.
+
+```java
+Set<Integer> set = new HashSet<>();
+Map<Integer,String> map = new HashMap<>();
+```
+
+## 33. Stack, Queue
+
+Stack, Deque (as stack), Queue, PriorityQueue.
+
+```java
+Deque<Integer> st = new ArrayDeque<>();
+Queue<Integer> q = new LinkedList<>();
+PriorityQueue<Integer> pq = new PriorityQueue<>();
+```
+
+## 34. Linked List
+
+LinkedList class or custom Node.
+
+```java
+LinkedList<Integer> ll = new LinkedList<>();
+ll.add(10); ll.add(20);
+```
+
+## 35. Tree, Heap, Graph, DP
+
+Add minimal code samples showing how to traverse and store nodes (BST, PriorityQueue for heap, adjacency lists for graph, memoization for DP). Keep style similar to the C++ cheatsheet.

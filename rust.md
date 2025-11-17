@@ -180,17 +180,48 @@
 
 ---
 
-## Ownership & Borrowing
+## Ownership & Borrowing (expanded)
 
-- **What:** Memory safety rules.
-- **Syntax:**
-  ```rust
-  let s = String::from("hi");
-  let s2 = s; // s moved, can't use s
-  let s3 = s2.clone(); // deep copy
-  fn foo(x: &String) { ... } // borrow
-  ```
-- **Key:** Only one owner; use `&` for borrowing.
+- **What it is:** Rust's memory model: each value has one owner; moving transfers ownership; borrowing allows non-owning access.
+- **Why it's important:** Prevents data races and dangling pointers at compile time using the borrow checker.
+
+**Basic rules:**
+
+1. Each value has a single owner.
+2. When the owner goes out of scope, value is dropped.
+3. Move transfers ownership; some types (Copy) are copied instead.
+4. You can borrow immutably many times, or mutably once. Not both simultaneously.
+
+**Examples:**
+
+```rust
+// Move semantics
+fn take_ownership(s: String) { println!("took: {}", s); }
+let s = String::from("hello");
+take_ownership(s); // s is moved; cannot use s afterward
+
+// Clone to duplicate data
+let s1 = String::from("hi");
+let s2 = s1.clone(); // deep copy; s1 still usable
+
+// Borrowing (immutable)
+fn len(s: &String) -> usize { s.len() }
+let s = String::from("hello");
+let l = len(&s); // s not moved
+
+// Mutable borrow
+fn append_excl(s: &mut String) { s.push('!'); }
+let mut s = String::from("hi");
+append_excl(&mut s);
+```
+
+**Key things to remember:**
+
+- Primitive types (ints, bools) implement Copy and are copied rather than moved.
+- The borrow checker enforces lifetimes; avoid returning references to local variables.
+- Lifetimes annotate relationships; e.g., `fn longest<'a>(x: &'a str, y: &'a str) -> &'a str`
+
+**Example use case:** Prevents dangling refs and enforces safe memory usage without GC.
 
 ---
 
@@ -232,7 +263,7 @@
 
 ---
 
-## Error Handling
+## Error Handling (small addition)
 
 - **What:** Use `Result` and `Option`.
 - **Syntax:**
@@ -245,6 +276,22 @@
   }
   ```
 - **Key:** Use `?` to propagate errors.
+
+**Example:**
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_file() -> io::Result<String> {
+    let mut f = File::open("file.txt")?;
+    let mut s = String::new();
+    f.read_to_string(&mut s)?;
+    Ok(s)
+}
+```
+
+**Key things to remember:** `?` returns early on `Err` and converts types where needed.
 
 ---
 
@@ -299,15 +346,78 @@
 
 ---
 
-## Concurrency & Threads
+## Concurrency & Threads (expanded)
 
-- **What:** Run code in parallel.
-- **Syntax:**
-  ```rust
-  use std::thread;
-  thread::spawn(|| { ... }).join().unwrap();
-  ```
-- **Key:** Use `move` to transfer ownership to threads.
+- **What it is:** Run work in parallel via threads; Rust enforces safety using ownership rules and marker traits `Send` and `Sync`.
+- **Why it's important:** Safe concurrency by design prevents data races at compile time.
+
+**Move closures and join:**
+
+```rust
+use std::thread;
+
+let name = String::from("rustacean");
+let handle = thread::spawn(move || { // move transfers ownership into closure
+    println!("Hello {}", name);
+});
+handle.join().unwrap();
+```
+
+**Why `move`?**
+
+- The spawned closure must own (or be 'static' for) values it uses because the original scope may end before the thread completes. `move` moves ownership into the closure so the closure can outlive the spawning scope.
+
+**Shared mutability with Arc and Mutex:**
+
+```rust
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+let counter = Arc::new(Mutex::new(0));
+let mut handles = vec![];
+
+for _ in 0..5 {
+    let counter = Arc::clone(&counter);
+    let handle = thread::spawn(move || {
+        let mut num = counter.lock().unwrap();
+        *num += 1;
+    });
+    handles.push(handle);
+}
+for h in handles { h.join().unwrap(); }
+println!("Counter: {}", *counter.lock().unwrap());
+```
+
+**Key primitives:**
+
+- Arc<T> — atomically reference-counted pointer for sharing across threads.
+- Mutex<T> — mutual exclusion guard for interior mutability.
+- RwLock<T> — concurrent read / exclusive write guard.
+
+**Channels (mpsc) for communication:**
+
+```rust
+use std::sync::mpsc;
+use std::thread;
+
+let (tx, rx) = mpsc::channel();
+thread::spawn(move || { tx.send(42).unwrap(); });
+println!("Got: {}", rx.recv().unwrap());
+```
+
+**Send & Sync:**
+
+- `Send` — ownership of the type can be transferred across threads.
+- `Sync` — type is safe to reference from multiple threads.
+- Standard types (String, Vec) are Send/Sync where safe; closures capturing non-send types will not compile.
+
+**Borrow checker & threads tips:**
+
+- Move ownership to thread via `move` closures or clone into Arc.
+- Avoid borrowing local data into a thread without `move` (borrow doesn't outlive scope).
+- When using `Arc<Mutex<T>>`, lock only for minimal time to keep concurrency high and avoid deadlocks.
+
+**Example use case:** Safe shared state counters, worker pools, and message passing without data races.
 
 ---
 
