@@ -1,49 +1,121 @@
-# Go Data Structures & Algorithms (DSA) Cheatsheet
-Last Updated : 10 Oct, 2025
+# Go Data Structures & Algorithms (DSA) Cheatsheet (Essential)
 
-1. Array & Slice
-Go arrays (fixed) and slices (dynamic).
+---
+
+## Array & Slice
+
+- Array: Fixed size.
+- Slice: Dynamic size.
 
 ```go
-package main
-import "fmt"
-func main() {
-    arr := [5]int{10,20,30,40,50}
-    slice := []int{10,20,30}
-    slice = append(slice, 40)
-    fmt.Println("Array:", arr)
-    fmt.Println("Slice:", slice)
-}
+arr := [3]int{1,2,3}
+slice := []int{1,2,3}
+slice = append(slice, 4)
 ```
 
-2. Searching & Sorting
-sort package and manual loops.
+---
+
+## Stack & Queue
+
+- Stack: Use slice, push/pop.
+- Queue: Use slice or channel.
+
+```go
+stack := []int{}
+stack = append(stack, 1)
+stack = stack[:len(stack)-1]
+
+queue := []int{}
+queue = append(queue, 1)
+queue = queue[1:]
+```
+
+---
+
+## Map
+
+- Key-value lookup.
+
+```go
+m := map[string]int{"a":1}
+```
+
+---
+
+## Linked List
+
+- Use container/list.
+
+```go
+import "container/list"
+l := list.New()
+l.PushBack(1)
+```
+
+---
+
+## Tree
+
+- Use struct for nodes.
+
+```go
+type Node struct { Data int; Left, Right *Node }
+```
+
+---
+
+## Graph
+
+- Adjacency list.
+
+```go
+adj := make([][]int, 10)
+adj[0] = append(adj[0], 1)
+```
+
+---
+
+## Searching
+
+- Linear: O(n).
+- Binary: O(log n), sorted slice.
+
+```go
+func linear(a []int, x int) int { for i,v := range a { if v==x { return i } } ; return -1 }
+func binary(a []int, x int) int { l,r := 0,len(a)-1; for l<=r { m := l+(r-l)/2; if a[m]==x { return m } ; if a[m]<x { l=m+1 } else { r=m-1 } } ; return -1 }
+```
+
+---
+
+## Sorting
+
+- Use sort package.
 
 ```go
 import "sort"
 sort.Ints(slice)
 ```
 
-3. String
-string and strings.Builder.
+---
 
-4. Set & Map
-Use map[T]struct{} as set; map[T]U for maps.
+## Recursion
+
+- Function calls itself, base case required.
 
 ```go
-m := map[string]int{"a":1}
-set := map[int]struct{}{3:{}}
+func fact(n int) int { if n==0 { return 1 } ; return n*fact(n-1) }
 ```
 
-5. Queue, Stack & Linked List
-Use slices or container/list for linked lists, use channels or slices for queues.
+---
 
-6. Tree & Graph
-Use struct nodes and slices for adjacency lists.
+## Dynamic Programming
 
-7. Heap
-container/heap for custom heaps.
+- Store subproblem results.
 
-8. Dynamic Programming
-Use slices for memoization.
+```go
+dp := make([]int, n+1)
+for i := range dp { dp[i] = -1 }
+func fib(n int) int { if n<=1 { return n } ; if dp[n]!=-1 { return dp[n] } ; dp[n]=fib(n-1)+fib(n-2); return dp[n] }
+```
 
+---

@@ -1,40 +1,126 @@
-# Rust Data Structures & Algorithms (DSA) Cheatsheet
+# Rust Data Structures & Algorithms (DSA) Cheatsheet (Essential)
+
 Last Updated : 10 Oct, 2025
 
-1. Array & Vec
-Vec is the dynamic array type in Rust.
+---
+
+## Array & Vec
+
+- Array: Fixed size.
+- Vec: Dynamic size.
 
 ```rust
-let arr = [10,20,30];
-let mut v = vec![10,20,30];
-v.push(40);
-println!("{:?} {:?}", arr, v);
+let arr = [1,2,3];
+let mut v = vec![1,2,3];
+v.push(4);
 ```
 
-2. Searching & Sorting
-Binary search on sorted slices with binary_search, sort via sort().
+---
+
+## Stack & Queue
+
+- Stack: Use Vec, push/pop.
+- Queue: Use VecDeque.
+
+```rust
+let mut stack = Vec::new();
+stack.push(1); stack.pop();
+
+use std::collections::VecDeque;
+let mut queue = VecDeque::new();
+queue.push_back(1); queue.pop_front();
+```
+
+---
+
+## HashMap
+
+- Key-value lookup.
+
+```rust
+use std::collections::HashMap;
+let mut m = HashMap::new();
+m.insert("a", 1);
+```
+
+---
+
+## Linked List
+
+- Use Vec or Box for nodes.
+
+```rust
+struct Node { data: i32, next: Option<Box<Node>> }
+```
+
+---
+
+## Tree
+
+- Use struct for nodes.
+
+```rust
+struct Node { data: i32, left: Option<Box<Node>>, right: Option<Box<Node>> }
+```
+
+---
+
+## Graph
+
+- Adjacency list.
+
+```rust
+let mut adj = vec![vec![]; 10];
+adj[0].push(1);
+```
+
+---
+
+## Searching
+
+- Linear: O(n).
+- Binary: O(log n), sorted slice.
+
+```rust
+fn linear(a: &[i32], x: i32) -> Option<usize> { a.iter().position(|&v| v==x) }
+fn binary(a: &[i32], x: i32) -> Option<usize> { a.binary_search(&x).ok() }
+```
+
+---
+
+## Sorting
+
+- Use sort().
 
 ```rust
 let mut v = vec![5,3,8,1];
 v.sort();
-let pos = v.binary_search(&3);
 ```
 
-3. Strings
-String and &str; use String::from and push_str.
+---
 
-4. HashSet & HashMap
-Use std::collections::{HashSet, HashMap}.
+## Recursion
 
-5. Stack & Queue
-Vec as stack; VecDeque as queue.
+- Function calls itself, base case required.
 
-6. Linked List, Tree, Graph
-Linked list (Vec or Box based), graphs with adjacency Vec<Vec<usize>>.
+```rust
+fn fact(n: u32) -> u32 { if n==0 { 1 } else { n*fact(n-1) } }
+```
 
-7. Heap
-BinaryHeap for max heap; use Reverse for min-heap.
+---
 
-8. DP
-Use Vec<Option<T>> for memoization.
+## Dynamic Programming
 
+- Store subproblem results.
+
+```rust
+fn fib(n: usize, dp: &mut [i32]) -> i32 {
+    if n<=1 { return n as i32; }
+    if dp[n]!=-1 { return dp[n]; }
+    dp[n]=fib(n-1,dp)+fib(n-2,dp); dp[n]
+}
+let mut dp = vec![-1; 11];
+fib(10, &mut dp);
+```
+
+---
